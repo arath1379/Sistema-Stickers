@@ -7,8 +7,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background: url('/images/fondo.png') no-repeat center fixed;
+            background: url('/images/fondo1.png') no-repeat center center fixed;
             background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
         .container {
             max-width: 400px;
@@ -47,6 +49,14 @@
                             <label for="loginPassword" class="form-label">Contraseña</label>
                             <input type="password" class="form-control" id="loginPassword" required minlength="6">
                         </div>
+                        <div class="mb-3">
+                            <label for="loginRole" class="form-label">Selecciona tu rol</label>
+                            <select class="form-control" id="loginRole" required>
+                                <option value="">Seleccione...</option>
+                                <option value="cliente">Cliente</option>
+                                <option value="proveedor">Proveedor</option>
+                            </select>
+                        </div>
                         <button type="submit" class="btn btn-primary w-100">Ingresar</button>
                     </form>
                 </div>
@@ -68,6 +78,14 @@
                             <label for="registerPassword" class="form-label">Contraseña</label>
                             <input type="password" class="form-control" id="registerPassword" required minlength="6">
                         </div>
+                        <div class="mb-3">
+                            <label for="registerRole" class="form-label">Selecciona tu rol</label>
+                            <select class="form-control" id="registerRole" required>
+                                <option value="">Seleccione...</option>
+                                <option value="cliente">Cliente</option>
+                                <option value="proveedor">Proveedor</option>
+                            </select>
+                        </div>
                         <button type="submit" class="btn btn-success w-100">Registrarse</button>
                     </form>
                 </div>
@@ -78,12 +96,22 @@
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            alert('Inicio de sesión exitoso');
+            let role = document.getElementById('loginRole').value;
+            if (role) {
+                alert('Inicio de sesión exitoso como ' + role);
+            } else {
+                alert('Por favor, selecciona un rol');
+            }
         });
-        
+
         document.getElementById('registerForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            alert('Registro exitoso');
+            let role = document.getElementById('registerRole').value;
+            if (role) {
+                alert('Registro exitoso como ' + role);
+            } else {
+                alert('Por favor, selecciona un rol');
+            }
         });
     </script>
 </body>
