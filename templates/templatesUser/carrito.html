@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: #1A1A2E;
+            color: #FFFFFF;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #16213E;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 10px;
+        }
+
+        .navbar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar ul li {
+            display: inline;
+        }
+
+        .navbar ul li a {
+            color: #EAEAEA;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            background: #30475E;
+        }
+
+        /* Contenedor */
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #EAEAEA;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            color: #1A1A2E;
+        }
+
+        /* Lista de productos */
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #F9F9F9;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item img {
+            width: 50px;
+            border-radius: 5px;
+            margin-right: 15px;
+        }
+
+        .cart-item p {
+            flex-grow: 1;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .cart-item .btn-delete {
+            background: #E94560;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .cart-item .btn-delete:hover {
+            background: #B81D3F;
+        }
+
+        /* Total */
+        .total {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        /* Botón de pago */
+        .btn-pagar {
+            background: #27AE60;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-pagar:hover {
+            background: #1E8449;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <ul>
+            <li><a href="cliente.html">Inicio</a></li>
+            <li><a href="catalogo.html">Catálogo</a></li>
+            <li><a href="historial.html">Historial</a></li>
+            <li><a href="carrito.html">Carrito</a></li>
+            <li><a href="perfil.html">Perfil</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h2>Carrito de Compras</h2>
+
+        <div id="cart-items">
+            <div class="cart-item">
+                <img src="images/sticker1.jpg" alt="Sticker Anime">
+                <p>Sticker Anime Pack - <span class="price">$15.00</span></p>
+                <button class="btn-delete" onclick="removeItem(this, 15)">Eliminar</button>
+            </div>
+            <div class="cart-item">
+                <img src="images/sticker2.jpg" alt="Sticker Superhéroes">
+                <p>Sticker Superhéroes - <span class="price">$12.00</span></p>
+                <button class="btn-delete" onclick="removeItem(this, 12)">Eliminar</button>
+            </div>
+        </div>
+
+        <p class="total">Total: $<span id="total">27.00</span></p>
+
+        <button class="btn-pagar" onclick="checkout()">Proceder al Pago</button>
+    </div>
+
+    <script>
+        function removeItem(button, price) {
+            let item = button.parentElement;
+            item.remove();
+
+            let totalElement = document.getElementById('total');
+            let currentTotal = parseFloat(totalElement.textContent);
+            totalElement.textContent = (currentTotal - price).toFixed(2);
+        }
+
+        function checkout() {
+            let total = document.getElementById('total').textContent;
+            if (total === "0.00") {
+                alert("Tu carrito está vacío.");
+            } else {
+                alert("¡Compra realizada con éxito! Total: $" + total);
+                document.getElementById('cart-items').innerHTML = "";
+                document.getElementById('total').textContent = "0.00";
+            }
+        }
+    </script>
+
+</body>
+</html>
