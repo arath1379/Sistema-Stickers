@@ -48,7 +48,7 @@
                             </div>
                         {% endif %}
                     {% endwith %}
-                    <form method="POST" action="{{ url_for('main.login') }}">
+                    <form method="POST" action="{{ url_for('auth.login') }}">
                         <div class="mb-3">
                             <label class="form-label">Correo Electrónico</label>
                             <input type="email" class="form-control" name="correo" required>
@@ -82,7 +82,7 @@
                             </div>
                         {% endif %}
                     {% endwith %}
-                    <form method="POST" action="{{ url_for('main.registro') }}">
+                    <form method="POST" action="{{ url_for('auth.login') }}">
                         <div class="mb-3">
                             <label class="form-label">Nombre</label>
                             <input type="text" class="form-control" name="nombre" required>
