@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Proveedores</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
             background: #1A1A2E;
@@ -40,7 +41,7 @@
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
-            max-width: 800px;
+            max-width: 900px;
         }
 
         h2 {
@@ -98,6 +99,22 @@
         .btn-success:hover {
             background: #27AE60;
         }
+
+        .nav-tabs .nav-link {
+            color: #1A1A2E;
+            font-weight: bold;
+        }
+
+        .nav-tabs .nav-link.active {
+            background-color: #30475E;
+            color: #FFFFFF;
+            border-color: #30475E;
+        }
+
+        .badge-status {
+            font-size: 0.85em;
+            padding: 5px 8px;
+        }
     </style>
 </head>
 <body>
@@ -131,34 +148,508 @@
         </div>
     </nav>
     <div class="container">
-        <h2>Gestión de Proveedores</h2>
-        <button class="btn btn-warning mb-3" data-bs-toggle="modal" data-bs-target="#addSupplierModal">+ Agregar Proveedor</button>
+        <h2 class="mb-4">Gestión de Proveedores</h2>
+        
+        <!-- Pestañas para navegar entre secciones -->
+        <ul class="nav nav-tabs mb-4" id="proveedoresTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="lista-tab" data-bs-toggle="tab" data-bs-target="#lista" type="button" role="tab" aria-controls="lista" aria-selected="true">
+                    <i class="fas fa-list"></i> Lista de Proveedores
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="solicitudes-tab" data-bs-toggle="tab" data-bs-target="#solicitudes" type="button" role="tab" aria-controls="solicitudes" aria-selected="false">
+                    <i class="fas fa-file-invoice"></i> Solicitudes de Reposición
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="historial-tab" data-bs-toggle="tab" data-bs-target="#historial" type="button" role="tab" aria-controls="historial" aria-selected="false">
+                    <i class="fas fa-history"></i> Historial de Compras
+                </button>
+            </li>
+        </ul>
+        
+        <!-- Contenido de las pestañas -->
+        <div class="tab-content" id="proveedoresTabsContent">
+            <!-- Lista de Proveedores -->
+            <div class="tab-pane fade show active" id="lista" role="tabpanel" aria-labelledby="lista-tab">
+                <button class="btn btn-warning mb-3" data-bs-toggle="modal" data-bs-target="#addSupplierModal">
+                    <i class="fas fa-plus"></i> Agregar Proveedor
+                </button>
+                
+                <div class="table-responsive">
+                    <table class="table table-striped" id="proveedoresTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Teléfono</th>
+                                <th>Email</th>
+                                <th>Categoría</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>001</td>
+                                <td>Distribuidora XYZ</td>
+                                <td>+52 123 456 7890</td>
+                                <td>contacto@xyz.com</td>
+                                <td>Electrónicos</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" onclick="editarProveedor('001')">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" onclick="eliminarProveedor('001')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button class="btn btn-success btn-sm" onclick="nuevaSolicitud('001')">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>002</td>
+                                <td>Suministros ABC</td>
+                                <td>+52 998 765 4321</td>
+                                <td>info@abc.com</td>
+                                <td>Papelería</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" onclick="editarProveedor('002')">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" onclick="eliminarProveedor('002')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button class="btn btn-success btn-sm" onclick="nuevaSolicitud('002')">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>003</td>
+                                <td>Materiales Industriales MNO</td>
+                                <td>+52 555 123 7890</td>
+                                <td>ventas@mno.com</td>
+                                <td>Herramientas</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" onclick="editarProveedor('003')">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" onclick="eliminarProveedor('003')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button class="btn btn-success btn-sm" onclick="nuevaSolicitud('003')">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Solicitudes de Reposición -->
+            <div class="tab-pane fade" id="solicitudes" role="tabpanel" aria-labelledby="solicitudes-tab">
+                <button class="btn btn-warning mb-3" data-bs-toggle="modal" data-bs-target="#newRequestModal">
+                    <i class="fas fa-plus"></i> Nueva Solicitud
+                </button>
+                
+                <div class="table-responsive">
+                    <table class="table table-striped" id="solicitudesTable">
+                        <thead>
+                            <tr>
+                                <th>#Solicitud</th>
+                                <th>Proveedor</th>
+                                <th>Fecha</th>
+                                <th>Productos</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>SOL-001</td>
+                                <td>Distribuidora XYZ</td>
+                                <td>01/04/2025</td>
+                                <td>5 productos</td>
+                                <td>$12,500</td>
+                                <td><span class="badge bg-warning badge-status">Pendiente</span></td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" onclick="verDetalleSolicitud('SOL-001')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-success btn-sm" onclick="aprobarSolicitud('SOL-001')">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" onclick="cancelarSolicitud('SOL-001')">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SOL-002</td>
+                                <td>Suministros ABC</td>
+                                <td>30/03/2025</td>
+                                <td>3 productos</td>
+                                <td>$5,780</td>
+                                <td><span class="badge bg-success badge-status">Aprobada</span></td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" onclick="verDetalleSolicitud('SOL-002')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-secondary btn-sm" onclick="recibirPedido('SOL-002')">
+                                        <i class="fas fa-box"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SOL-003</td>
+                                <td>Materiales Industriales MNO</td>
+                                <td>28/03/2025</td>
+                                <td>8 productos</td>
+                                <td>$23,450</td>
+                                <td><span class="badge bg-info badge-status">Recibida</span></td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" onclick="verDetalleSolicitud('SOL-003')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-primary btn-sm" onclick="generarReporte('SOL-003')">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Historial de Compras -->
+            <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="historial-tab">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            <input type="date" class="form-control" id="fechaInicio">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            <input type="date" class="form-control" id="fechaFin">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary w-100" onclick="filtrarHistorial()">
+                            <i class="fas fa-search"></i> Filtrar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-striped" id="historialTable">
+                        <thead>
+                            <tr>
+                                <th>#Compra</th>
+                                <th>Proveedor</th>
+                                <th>Fecha</th>
+                                <th>Productos</th>
+                                <th>Total</th>
+                                <th>Método de Pago</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>COM-001</td>
+                                <td>Distribuidora XYZ</td>
+                                <td>25/03/2025</td>
+                                <td>6 productos</td>
+                                <td>$15,350</td>
+                                <td>Transferencia</td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" onclick="verDetalleCompra('COM-001')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-primary btn-sm" onclick="imprimirFactura('COM-001')">
+                                        <i class="fas fa-print"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>COM-002</td>
+                                <td>Suministros ABC</td>
+                                <td>20/03/2025</td>
+                                <td>4 productos</td>
+                                <td>$7,890</td>
+                                <td>Crédito</td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" onclick="verDetalleCompra('COM-002')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-primary btn-sm" onclick="imprimirFactura('COM-002')">
+                                        <i class="fas fa-print"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>COM-003</td>
+                                <td>Materiales Industriales MNO</td>
+                                <td>15/03/2025</td>
+                                <td>10 productos</td>
+                                <td>$32,750</td>
+                                <td>Transferencia</td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" onclick="verDetalleCompra('COM-003')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-primary btn-sm" onclick="imprimirFactura('COM-003')">
+                                        <i class="fas fa-print"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Teléfono</th>
-                    <th>Email</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>001</td>
-                    <td>Distribuidora XYZ</td>
-                    <td>+52 123 456 7890</td>
-                    <td>contacto@xyz.com</td>
-                    <td>
-                        <button class="btn btn-primary btn-sm">Editar</button>
-                        <button class="btn btn-danger btn-sm">Eliminar</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <!-- Modal para Agregar Proveedor -->
+    <div class="modal fade" id="addSupplierModal" tabindex="-1" aria-labelledby="addSupplierModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addSupplierModalLabel">Agregar Nuevo Proveedor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="proveedorForm">
+                        <div class="mb-3">
+                            <label for="nombreProveedor" class="form-label">Nombre del Proveedor</label>
+                            <input type="text" class="form-control" id="nombreProveedor" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="telefonoProveedor" class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control" id="telefonoProveedor" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="emailProveedor" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="emailProveedor" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="categoriaProveedor" class="form-label">Categoría</label>
+                            <select class="form-select" id="categoriaProveedor" required>
+                                <option value="">Seleccionar categoría</option>
+                                <option value="Electrónicos">Electrónicos</option>
+                                <option value="Papelería">Papelería</option>
+                                <option value="Herramientas">Herramientas</option>
+                                <option value="Alimentos">Alimentos</option>
+                                <option value="Otros">Otros</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="direccionProveedor" class="form-label">Dirección</label>
+                            <textarea class="form-control" id="direccionProveedor" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="contactoProveedor" class="form-label">Persona de Contacto</label>
+                            <input type="text" class="form-control" id="contactoProveedor">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success" onclick="guardarProveedor()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Nueva Solicitud de Reposición -->
+    <div class="modal fade" id="newRequestModal" tabindex="-1" aria-labelledby="newRequestModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newRequestModalLabel">Nueva Solicitud de Reposición</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="solicitudForm">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="proveedorSolicitud" class="form-label">Proveedor</label>
+                                <select class="form-select" id="proveedorSolicitud" required>
+                                    <option value="">Seleccionar proveedor</option>
+                                    <option value="001">Distribuidora XYZ</option>
+                                    <option value="002">Suministros ABC</option>
+                                    <option value="003">Materiales Industriales MNO</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="fechaSolicitud" class="form-label">Fecha</label>
+                                <input type="date" class="form-control" id="fechaSolicitud" required>
+                            </div>
+                        </div>
+                        
+                        <h6 class="mt-4 mb-3">Productos</h6>
+                        <div id="productosContainer">
+                            <div class="row mb-2 producto-row">
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control producto-nombre" placeholder="Nombre del producto" required>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="number" class="form-control producto-cantidad" placeholder="Cantidad" min="1" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" class="form-control producto-precio" placeholder="Precio unitario" min="0" step="0.01" required>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-danger w-100 btn-eliminar-producto">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-3">
+                            <button type="button" class="btn btn-primary" id="btnAgregarProducto">
+                                <i class="fas fa-plus"></i> Agregar Producto
+                            </button>
+                            <div class="text-end">
+                                <strong>Total: $<span id="totalSolicitud">0.00</span></strong>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 mt-4">
+                            <label for="comentariosSolicitud" class="form-label">Comentarios</label>
+                            <textarea class="form-control" id="comentariosSolicitud" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success" onclick="enviarSolicitud()">Enviar Solicitud</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Ver Detalles de Solicitud -->
+    <div class="modal fade" id="detalleSolicitudModal" tabindex="-1" aria-labelledby="detalleSolicitudModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detalleSolicitudModalLabel">Detalle de Solicitud</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="detalleSolicitudBody">
+                    <!-- El contenido se cargará dinámicamente -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Función para guardar un nuevo proveedor
+        function guardarProveedor() {
+            // Obtener valores del formulario
+            const nombre = document.getElementById('nombreProveedor').value;
+            const telefono = document.getElementById('telefonoProveedor').value;
+            const email = document.getElementById('emailProveedor').value;
+            const categoria = document.getElementById('categoriaProveedor').value;
+            
+            // Validar que los campos obligatorios estén completos
+            if (!nombre || !telefono || !email || !categoria) {
+                alert('Por favor complete todos los campos obligatorios');
+                return;
+            }
+            
+            // Generar un ID único para el nuevo proveedor
+            const newId = generateId();
+            
+            // Agregar el nuevo proveedor a la tabla
+            const tabla = document.getElementById('proveedoresTable').getElementsByTagName('tbody')[0];
+            const newRow = tabla.insertRow();
+            
+            newRow.innerHTML = `
+                <td>${newId}</td>
+                <td>${nombre}</td>
+                <td>${telefono}</td>
+                <td>${email}</td>
+                <td>${categoria}</td>
+                <td>
+                    <button class="btn btn-primary btn-sm" onclick="editarProveedor('${newId}')">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="eliminarProveedor('${newId}')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <button class="btn btn-success btn-sm" onclick="nuevaSolicitud('${newId}')">
+                        <i class="fas fa-shopping-cart"></i>
+                    </button>
+                </td>
+            `;
+            
+            // Actualizar la lista de proveedores en el formulario de solicitudes
+            const selectProveedor = document.getElementById('proveedorSolicitud');
+            const option = document.createElement('option');
+            option.value = newId;
+            option.textContent = nombre;
+            selectProveedor.appendChild(option);
+            
+            // Cerrar el modal y limpiar el formulario
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addSupplierModal'));
+            modal.hide();
+            document.getElementById('proveedorForm').reset();
+            
+            // Mostrar mensaje de éxito
+            alert('Proveedor guardado correctamente');
+        }
+        
+        // Generar un ID único para nuevos proveedores
+        function generateId() {
+            const tabla = document.getElementById('proveedoresTable').getElementsByTagName('tbody')[0];
+            const rows = tabla.rows.length;
+            const newId = (rows + 1).toString().padStart(3, '0');
+            return newId;
+        }
+        
+        // Función para editar un proveedor existente
+        function editarProveedor(id) {
+            // Aquí se implementaría la lógica para editar un proveedor
+            // Por ahora, solo mostramos un mensaje
+            alert(`Editando proveedor con ID: ${id}`);
+        }
+        
+        // Función para eliminar un proveedor
+        function eliminarProveedor(id) {
+            if (confirm('¿Está seguro de que desea eliminar este proveedor?')) {
+                // Buscar y eliminar la fila correspondiente en la tabla
+                const tabla = document.getElementById('proveedoresTable').getElementsByTagName('tbody')[0];
+                for (let i = 0; i < tabla.rows.length; i++) {
+                    if (tabla.rows[i].cells[0].textContent === id) {
+                        tabla.deleteRow(i);
+                        break;
+                    }
+                }
+                
+                // Eliminar la opción correspondiente del select de proveedores
+                const selectProveedor = document.getElementById('proveedorSolicitud');
+                for (let i = 0; i < selectProveedor.options.length; i++) {
+                    if (selectProveedor.options[i].value === id) {
+                        selectProveedor.remove(i);
+                        break;
+                    }
+                }
+                
+            }    
+        }
+</script>
 </body>
 </html>

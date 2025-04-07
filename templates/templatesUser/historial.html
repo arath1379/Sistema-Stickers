@@ -14,7 +14,6 @@
             padding: 0;
         }
 
-        /* Navbar */
         .navbar {
             background: #16213E;
             padding: 15px;
@@ -32,10 +31,6 @@
             gap: 20px;
         }
 
-        .navbar ul li {
-            display: inline;
-        }
-
         .navbar ul li a {
             color: #EAEAEA;
             text-decoration: none;
@@ -49,7 +44,6 @@
             background: #30475E;
         }
 
-        /* Contenedor */
         .container {
             max-width: 800px;
             margin: 50px auto;
@@ -61,16 +55,13 @@
             color: #1A1A2E;
         }
 
-        /* Tarjeta de pedido */
         .order-card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
             background: #F9F9F9;
             border-radius: 10px;
             padding: 15px;
             margin-bottom: 10px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
         }
 
         .order-card img {
@@ -79,88 +70,54 @@
             margin-right: 15px;
         }
 
-        .order-card p {
-            flex-grow: 1;
-            margin: 0;
-            font-weight: bold;
+        .order-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
-        .order-card .btn-details {
-            background: #008CBA;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .order-card .btn-details:hover {
-            background: #005F73;
-        }
-
-        /* Detalles ocultos */
         .order-details {
-            display: none;
             background: #F2F2F2;
             padding: 10px;
             border-radius: 10px;
-            margin-top: 5px;
-            text-align: left;
+            margin-top: 10px;
         }
-
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <ul>
-            <li><a href="cliente.html">Inicio</a></li>
-            <li><a href="catalogo.html">Catálogo</a></li>
-            <li><a href="historial.html">Historial</a></li>
-            <li><a href="carrito.html">Carrito</a></li>
-            <li><a href="perfil.html">Perfil</a></li>
-        </ul>
-    </nav>
+<nav class="navbar">
+    <ul>
+        <li><a href="{{ url_for('main.dashboard_cliente') }}">Inicio</a></li>
+        <li><a href="{{ url_for('main.catalogo_cliente') }}">Catálogo</a></li>
+        <li><a href="{{ url_for('main.historial_cliente') }}">Historial</a></li>
+        <li><a href="{{ url_for('main.carrito_cliente') }}">Carrito</a></li>
+        <li><a href="{{ url_for('main.perfil_cliente') }}">Perfil</a></li>
+    </ul>
+</nav>
 
-    <div class="container">
-        <h2>Historial de Compras</h2>
+<div class="container">
+    <h2>Historial de Compras</h2>
 
-        <div class="order-card">
-            <img src="images/sticker1.jpg" alt="Sticker Anime">
-            <p>Pedido #12345 - <strong>Sticker Anime Pack</strong></p>
-            <button class="btn-details" onclick="toggleDetails('details-12345')">Ver Detalles</button>
-        </div>
-        <div class="order-details" id="details-12345">
-            <p>Fecha: 15/03/2025</p>
-            <p>Total: $15.00</p>
-            <p>Estado: Enviado 📦</p>
-        </div>
+    {% if pedidos %}
+        {% for pedido in pedidos %}
+            <div class="order-card">
+                <div class="order-info">
+                    <img src="{{ pedido.imagen }}" alt="{{ pedido.producto }}">
+                    <p>Pedido #{{ pedido.id }} - <strong>{{ pedido.producto }}</strong></p>
+                </div>
+                <div class="order-details">
+                    <p>Fecha: {{ pedido.fecha }}</p>
+                    <p>Total: ${{ pedido.total }}</p>
+                    <p>Estado: {{ pedido.estado }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No hay pedidos aún.</p>
+    {% endif %}
 
-        <div class="order-card">
-            <img src="images/sticker2.jpg" alt="Sticker Superhéroes">
-            <p>Pedido #12346 - <strong>Sticker Superhéroes</strong></p>
-            <button class="btn-details" onclick="toggleDetails('details-12346')">Ver Detalles</button>
-        </div>
-        <div class="order-details" id="details-12346">
-            <p>Fecha: 10/03/2025</p>
-            <p>Total: $12.00</p>
-            <p>Estado: Entregado ✅</p>
-        </div>
-
-    </div>
-
-    <script>
-        function toggleDetails(id) {
-            let details = document.getElementById(id);
-            if (details.style.display === "none" || details.style.display === "") {
-                details.style.display = "block";
-            } else {
-                details.style.display = "none";
-            }
-        }
-    </script>
+</div>
 
 </body>
 </html>

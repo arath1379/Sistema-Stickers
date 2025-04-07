@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Stickers</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
             background: #1A1A2E;
@@ -15,7 +15,6 @@
             padding: 0;
         }
 
-        /* Navbar */
         .navbar {
             background: #16213E;
             padding: 15px;
@@ -50,7 +49,6 @@
             background: #30475E;
         }
 
-        /* Contenedor */
         .container {
             max-width: 1000px;
             margin: 50px auto;
@@ -62,22 +60,6 @@
             color: #1A1A2E;
         }
 
-        /* Barra de búsqueda */
-        .search-bar {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .search-bar input {
-            width: 70%;
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            font-size: 16px;
-        }
-
-        /* Grid de Stickers */
         .catalog-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -117,61 +99,52 @@
         .btn:hover {
             background: #B81D3F;
         }
-
     </style>
 </head>
 <body>
 
     <nav class="navbar">
         <ul>
-            <li><a href="cliente.html">Inicio</a></li> <!-- Redirige al Dashboard del Cliente -->
-            <li><a href="historial.html">Historial</a></li>
-            <li><a href="carrito.html">Carrito</a></li>
-            <li><a href="perfil.html">Perfil</a></li>
+            <li><a href="{{ url_for('main.cliente') }}">Inicio</a></li>
+            <li><a href="{{ url_for('main.historial') }}">Historial</a></li>
+            <li><a href="{{ url_for('main.carrito') }}">Carrito</a></li>
+            <li><a href="{{ url_for('main.perfil') }}">Perfil</a></li>
         </ul>
     </nav>
 
     <div class="container">
         <h2>Catálogo de Stickers</h2>
 
-        <div class="search-bar">
-            <input type="text" id="search" placeholder="Buscar stickers..." onkeyup="filterStickers()">
-        </div>
-
-        <div class="catalog-grid" id="catalog">
+        <div class="catalog-grid">
             <div class="card">
-                <img src="images/sticker1.jpg" alt="Sticker Anime">
+                <img src="{{ url_for('static', filename='images/sticker1.jpg') }}" alt="Sticker Anime">
                 <p>Sticker Anime Pack - $15.00</p>
-                <button class="btn">Agregar al Carrito</button>
+                <form method="POST" action="{{ url_for('main.agregar_al_carrito') }}">
+                    <input type="hidden" name="nombre" value="Sticker Anime Pack">
+                    <input type="hidden" name="precio" value="15.00">
+                    <button type="submit" class="btn">Agregar al Carrito</button>
+                </form>
             </div>
             <div class="card">
-                <img src="images/sticker2.jpg" alt="Sticker Superhéroes">
+                <img src="{{ url_for('static', filename='images/sticker2.jpg') }}" alt="Sticker Superhéroes">
                 <p>Sticker Superhéroes - $12.00</p>
-                <button class="btn">Agregar al Carrito</button>
+                <form method="POST" action="{{ url_for('main.agregar_al_carrito') }}">
+                    <input type="hidden" name="nombre" value="Sticker Superhéroes">
+                    <input type="hidden" name="precio" value="12.00">
+                    <button type="submit" class="btn">Agregar al Carrito</button>
+                </form>
             </div>
             <div class="card">
-                <img src="images/sticker3.jpg" alt="Sticker Retro">
+                <img src="{{ url_for('static', filename='images/sticker3.jpg') }}" alt="Sticker Retro">
                 <p>Sticker Retro - $10.00</p>
-                <button class="btn">Agregar al Carrito</button>
+                <form method="POST" action="{{ url_for('main.agregar_al_carrito') }}">
+                    <input type="hidden" name="nombre" value="Sticker Retro">
+                    <input type="hidden" name="precio" value="10.00">
+                    <button type="submit" class="btn">Agregar al Carrito</button>
+                </form>
             </div>
         </div>
     </div>
-
-    <script>
-        function filterStickers() {
-            let input = document.getElementById('search').value.toLowerCase();
-            let cards = document.querySelectorAll('.card');
-
-            cards.forEach(card => {
-                let text = card.innerText.toLowerCase();
-                if (text.includes(input)) {
-                    card.style.display = "block";
-                } else {
-                    card.style.display = "none";
-                }
-            });
-        }
-    </script>
 
 </body>
 </html>

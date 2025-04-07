@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background: url('/images/fondo1.png') no-repeat center center fixed;
+            background: url("{{ url_for('static', filename='images/fondo1.png') }}") no-repeat center center fixed;
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -41,18 +41,25 @@
             <div class="tab-pane fade show active" id="login">
                 <div class="card p-4 mt-3">
                     <h4 class="text-center">Inicio de Sesión</h4>
-                    <form id="loginForm">
+                    {% with messages = get_flashed_messages(category_filter=['login']) %}
+                        {% if messages %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ messages[0] }}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                    <form method="POST" action="{{ url_for('main.login') }}">
                         <div class="mb-3">
                             <label class="form-label">Correo Electrónico</label>
-                            <input type="email" class="form-control" id="loginEmail" required>
+                            <input type="email" class="form-control" name="correo" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Contraseña</label>
-                            <input type="password" class="form-control" id="loginPassword" required>
+                            <input type="password" class="form-control" name="contrasena" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Selecciona tu rol</label>
-                            <select class="form-control" id="loginRole" required>
+                            <label class="form-label">Rol</label>
+                            <select class="form-control" name="rol" required>
                                 <option value="">Seleccione...</option>
                                 <option value="cliente">Cliente</option>
                                 <option value="proveedor">Proveedor</option>
@@ -63,33 +70,47 @@
                     </form>
                 </div>
             </div>
+
+            <!-- Register Form -->
+            <div class="tab-pane fade" id="register">
+                <div class="card p-4 mt-3">
+                    <h4 class="text-center">Registro de Usuario</h4>
+                    {% with messages = get_flashed_messages(category_filter=['registro']) %}
+                        {% if messages %}
+                            <div class="alert alert-info" role="alert">
+                                {{ messages[0] }}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                    <form method="POST" action="{{ url_for('main.registro') }}">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" class="form-control" name="nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" name="correo" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" name="contrasena" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Rol</label>
+                            <select class="form-control" name="rol" required>
+                                <option value="">Seleccione...</option>
+                                <option value="cliente">Cliente</option>
+                                <option value="proveedor">Proveedor</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Registrarse</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            let role = document.getElementById('loginRole').value;
-    
-            if (role) {
-                localStorage.setItem('userRole', role); // Guardar rol en localStorage
-                
-                // Obtener ruta base
-                let basePath = window.location.origin; 
-    
-                if (role === "cliente") {
-                    window.location.href = basePath + "/templates/templatesUser/cliente.html"; 
-                } else if (role === "proveedor") {
-                    window.location.href = basePath + "/templates/templatesProveedor/proveedor.html"; 
-                } else if (role === "admin") {
-                    window.location.href = basePath + "/templates/templatesAdmin/admin.html"; 
-                }
-            } else {
-                alert('Por favor, selecciona un rol');
-            }
-        });
-    </script>
-    
 </body>
 </html>

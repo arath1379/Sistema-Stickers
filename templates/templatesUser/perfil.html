@@ -14,7 +14,6 @@
             padding: 0;
         }
 
-        /* Navbar */
         .navbar {
             background: #16213E;
             padding: 15px;
@@ -49,7 +48,6 @@
             background: #30475E;
         }
 
-        /* Contenedor */
         .container {
             max-width: 400px;
             margin: 50px auto;
@@ -61,7 +59,6 @@
             color: #1A1A2E;
         }
 
-        /* Imagen de perfil */
         .profile-pic {
             width: 100px;
             height: 100px;
@@ -77,7 +74,6 @@
             font-weight: bold;
         }
 
-        /* Botones */
         .btn {
             background: #008CBA;
             color: white;
@@ -99,7 +95,6 @@
             margin-top: 10px;
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -133,42 +128,45 @@
 
     <nav class="navbar">
         <ul>
-            <li><a href="cliente.html">Inicio</a></li>
-            <li><a href="catalogo.html">Catálogo</a></li>
-            <li><a href="historial.html">Historial</a></li>
-            <li><a href="carrito.html">Carrito</a></li>
-            <li><a href="perfil.html">Perfil</a></li>
+            <li><a href="{{ url_for('main.dashboard_cliente') }}">Inicio</a></li>
+            <li><a href="{{ url_for('main.catalogo_cliente') }}">Catálogo</a></li>
+            <li><a href="{{ url_for('main.historial_cliente') }}">Historial</a></li>
+            <li><a href="{{ url_for('main.carrito_cliente') }}">Carrito</a></li>
+            <li><a href="{{ url_for('main.perfil_cliente') }}">Perfil</a></li>
         </ul>
     </nav>
 
     <div class="container">
         <h2>Perfil y Configuración</h2>
-        
-        <img src="images/perfil.png" class="profile-pic" id="profilePic" alt="Foto de perfil">
+
+        <img src="{{ url_for('static', filename='images/perfil.png') }}" class="profile-pic" id="profilePic" alt="Foto de perfil">
         <p class="edit-photo" onclick="document.getElementById('fileInput').click()">Cambiar foto</p>
         <input type="file" id="fileInput" style="display: none" accept="image/*">
 
         <div class="card">
-            <p>Nombre: <strong id="userName">Juan Pérez</strong></p>
-            <p>Correo: <strong id="userEmail">juanperez@email.com</strong></p>
-            <p>Dirección: <strong id="userAddress">Calle Falsa 123</strong></p>
+            <p>Nombre: <strong id="userName">{{ usuario.nombre }}</strong></p>
+            <p>Correo: <strong id="userEmail">{{ usuario.correo }}</strong></p>
+            <p>Dirección: <strong id="userAddress">{{ usuario.direccion or 'No disponible' }}</strong></p>
             <button class="btn" onclick="openModal()">Editar Perfil</button>
-            <button class="btn btn-logout" onclick="logout()">Cerrar Sesión</button>
+            <a href="{{ url_for('main.logout') }}" class="btn btn-logout">Cerrar Sesión</a>
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal de edición -->
     <div class="modal" id="editModal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h3>Editar Perfil</h3>
-            <label>Nombre:</label>
-            <input type="text" id="editName" class="form-control">
-            <label>Correo:</label>
-            <input type="email" id="editEmail" class="form-control">
-            <label>Dirección:</label>
-            <input type="text" id="editAddress" class="form-control">
-            <button class="btn" onclick="saveChanges()">Guardar Cambios</button>
+            <form method="POST" action="{{ url_for('main.editar_perfil_cliente') }}">
+                <label>Nombre:</label>
+                <input type="text" name="nombre" id="editName" class="form-control" required>
+                <label>Correo:</label>
+                <input type="email" name="correo" id="editEmail" class="form-control" required>
+                <label>Dirección:</label>
+                <input type="text" name="direccion" id="editAddress" class="form-control">
+                <br>
+                <button type="submit" class="btn">Guardar Cambios</button>
+            </form>
         </div>
     </div>
 
@@ -182,18 +180,6 @@
 
         function closeModal() {
             document.getElementById('editModal').style.display = 'none';
-        }
-
-        function saveChanges() {
-            document.getElementById('userName').textContent = document.getElementById('editName').value;
-            document.getElementById('userEmail').textContent = document.getElementById('editEmail').value;
-            document.getElementById('userAddress').textContent = document.getElementById('editAddress').value;
-            closeModal();
-        }
-
-        function logout() {
-            alert("Sesión cerrada");
-            window.location.href = "/templates/login.html";
         }
 
         document.getElementById('fileInput').addEventListener('change', function(event) {

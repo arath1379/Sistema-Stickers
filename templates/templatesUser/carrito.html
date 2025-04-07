@@ -130,11 +130,11 @@
 
     <nav class="navbar">
         <ul>
-            <li><a href="cliente.html">Inicio</a></li>
-            <li><a href="catalogo.html">Catálogo</a></li>
-            <li><a href="historial.html">Historial</a></li>
-            <li><a href="carrito.html">Carrito</a></li>
-            <li><a href="perfil.html">Perfil</a></li>
+            <li><a href="{{ url_for('main.dashboard_cliente') }}">Inicio</a></li>
+            <li><a href="{{ url_for('main.catalogo_cliente') }}">Catálogo</a></li>
+            <li><a href="{{ url_for('main.historial_cliente') }}">Historial</a></li>
+            <li><a href="{{ url_for('main.carrito_cliente') }}">Carrito</a></li>
+            <li><a href="{{ url_for('main.perfil_cliente') }}">Perfil</a></li>
         </ul>
     </nav>
 
@@ -142,44 +142,23 @@
         <h2>Carrito de Compras</h2>
 
         <div id="cart-items">
+            {% for p in productos %}
             <div class="cart-item">
-                <img src="images/sticker1.jpg" alt="Sticker Anime">
-                <p>Sticker Anime Pack - <span class="price">$15.00</span></p>
-                <button class="btn-delete" onclick="removeItem(this, 15)">Eliminar</button>
+                <img src="{{ p.imagen }}" alt="{{ p.nombre }}">
+                <p>{{ p.nombre }} - <span class="price">${{ "%.2f"|format(p.precio) }}</span></p>
+                <form method="POST" action="{{ url_for('main.eliminar_del_carrito', id=p.id) }}">
+                    <button class="btn-delete" type="submit">Eliminar</button>
+                </form>
             </div>
-            <div class="cart-item">
-                <img src="images/sticker2.jpg" alt="Sticker Superhéroes">
-                <p>Sticker Superhéroes - <span class="price">$12.00</span></p>
-                <button class="btn-delete" onclick="removeItem(this, 12)">Eliminar</button>
-            </div>
+            {% endfor %}
         </div>
 
-        <p class="total">Total: $<span id="total">27.00</span></p>
+        <p class="total">Total: ${{ "%.2f"|format(total) }}</p>
 
-        <button class="btn-pagar" onclick="checkout()">Proceder al Pago</button>
+        <form method="POST" action="{{ url_for('main.procesar_pago') }}">
+            <button class="btn-pagar" type="submit">Proceder al Pago</button>
+        </form>
     </div>
-
-    <script>
-        function removeItem(button, price) {
-            let item = button.parentElement;
-            item.remove();
-
-            let totalElement = document.getElementById('total');
-            let currentTotal = parseFloat(totalElement.textContent);
-            totalElement.textContent = (currentTotal - price).toFixed(2);
-        }
-
-        function checkout() {
-            let total = document.getElementById('total').textContent;
-            if (total === "0.00") {
-                alert("Tu carrito está vacío.");
-            } else {
-                alert("¡Compra realizada con éxito! Total: $" + total);
-                document.getElementById('cart-items').innerHTML = "";
-                document.getElementById('total').textContent = "0.00";
-            }
-        }
-    </script>
 
 </body>
 </html>
