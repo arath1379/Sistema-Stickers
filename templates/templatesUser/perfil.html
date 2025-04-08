@@ -128,11 +128,11 @@
 
     <nav class="navbar">
         <ul>
-            <li><a href="{{ url_for('main.dashboard_cliente') }}">Inicio</a></li>
-            <li><a href="{{ url_for('main.catalogo_cliente') }}">Catálogo</a></li>
-            <li><a href="{{ url_for('main.historial_cliente') }}">Historial</a></li>
-            <li><a href="{{ url_for('main.carrito_cliente') }}">Carrito</a></li>
-            <li><a href="{{ url_for('main.pedidos_cliente') }}">Pedidos</a></li>
+            <li><a href="{{ url_for('cliente.dashboard') }}">Inicio</a></li>
+            <li><a href="{{ url_for('cliente.catalogo') }}">Catálogo</a></li>
+            <li><a href="{{ url_for('cliente.historial') }}">Historial</a></li>
+            <li><a href="{{ url_for('cliente.carrito') }}">Carrito</a></li>
+            <li><a href="{{ url_for('cliente.pedidos') }}">Pedidos</a></li>
         </ul>
     </nav>
 
@@ -148,7 +148,7 @@
             <p>Correo: <strong id="userEmail">{{ usuario.correo }}</strong></p>
             <p>Dirección: <strong id="userAddress">{{ usuario.direccion or 'No disponible' }}</strong></p>
             <button class="btn" onclick="openModal()">Editar Perfil</button>
-            <a href="{{ url_for('main.logout') }}" class="btn btn-logout">Cerrar Sesión</a>
+            <a href="{{ url_for('auth.logout') }}" class="btn btn-logout">Cerrar Sesión</a>
         </div>
     </div>
 
@@ -157,7 +157,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h3>Editar Perfil</h3>
-            <form method="POST" action="{{ url_for('main.editar_perfil_cliente') }}">
+            <form method="POST" action="{{ url_for('cliente.editar_perfil_cliente') }}">
                 <label>Nombre:</label>
                 <input type="text" name="nombre" id="editName" class="form-control" required>
                 <label>Correo:</label>

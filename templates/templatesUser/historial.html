@@ -88,12 +88,12 @@
 
 <nav class="navbar">
     <ul>
-        <li><a href="{{ url_for('main.dashboard_cliente') }}">Inicio</a></li>
-        <li><a href="{{ url_for('main.catalogo_cliente') }}">Catálogo</a></li>
-        <li><a href="{{ url_for('main.historial_cliente') }}">Historial</a></li>
-        <li><a href="{{ url_for('main.carrito_cliente') }}">Carrito</a></li>
-        <li><a href="{{ url_for('main.pedidos_cliente') }}">Pedidos</a></li>
-        <li><a href="{{ url_for('main.perfil_cliente') }}">Perfil</a></li>
+        <li><a href="{{ url_for('cliente.dashboard') }}">Inicio</a></li>
+        <li><a href="{{ url_for('cliente.catalogo') }}">Catálogo</a></li>
+        <li><a href="{{ url_for('cliente.historial') }}">Historial</a></li>
+        <li><a href="{{ url_for('cliente.carrito') }}">Carrito</a></li>
+        <li><a href="{{ url_for('cliente.pedidos') }}">Pedidos</a></li>
+        <li><a href="{{ url_for('cliente.perfil') }}">Perfil</a></li>
     </ul>
 </nav>
 
@@ -119,6 +119,5 @@
     {% endif %}
 
 </div>
-
 </body>
 </html>

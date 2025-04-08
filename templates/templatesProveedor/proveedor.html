@@ -98,24 +98,21 @@
 
     <nav class="navbar">
         <div>
-            <a href="{{ url_for('main.proveedores') }}" class="navbar-brand">
+            <a href="{{ url_for('proveedor.dashboard') }}" class="navbar-brand">
                 <i class="fas fa-truck"></i> Proveedor
             </a>
         </div>
         <ul>
-            <li><a href="{{ url_for('inventario') }}"><i class="fas fa-boxes"></i> Inventario</a></li>
-            <li><a href="{{ url_for('pedidos') }}"><i class="fas fa-clipboard-list"></i> Pedidos</a></li>
-            <li><a href="{{ url_for('clientes') }}"><i class="fas fa-users"></i> Clientes</a></li>
-            <li>
-                <a href="{{ url_for('notificaciones') }}" class="notificacion-icon position-relative">
-                    <i class="fas fa-bell"></i>
-                    {% if notificaciones > 0 %}
-                        <span>{{ notificaciones }}</span>
-                    {% endif %}
-                </a>
+            <li><a href="{{ url_for('proveedor.proveedor_inventario') }}"><i class="fas fa-boxes"></i> Inventario</a></li>
+            <li><a href="{{ url_for('proveedor.proveedor_pedidos') }}"><i class="fas fa-clipboard-list"></i> Pedidos</a></li>
+            <li><a href="{{ url_for('proveedor.proveedor_clientes') }}"><i class="fas fa-users"></i> Clientes</a></li>
+            <li class="nav-item">
+                    <a class="nav-link text-warning" href="#" onclick="verNotificaciones()">
+                        <i class="fas fa-bell"></i> <span id="notificaciones">3</span>
+                    </a>
             </li>
             <li>
-                <form method="POST" action="{{ url_for('logout') }}" style="display: inline;">
+                <form method="POST" action="{{ url_for('auth.logout') }}" style="display: inline;">
                     <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
                 </form>
             </li>
@@ -130,28 +127,25 @@
                 <div class="card">
                     <h5>Administrar Productos</h5>
                     <p>Gestiona tu inventario.</p>
-                    <a href="{{ url_for('inventario') }}" class="btn btn-primary">Ver Productos</a>
+                    <a href="{{ url_for('proveedor.proveedor_inventario') }}" class="btn btn-primary">Ver Productos</a>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="card">
                     <h5>Órdenes Pendientes</h5>
                     <p>Revisa pedidos por entregar.</p>
-                    <a href="{{ url_for('pedidos') }}" class="btn btn-primary">Ver Órdenes</a>
+                    <a href="{{ url_for('proveedor.proveedor_pedidos') }}" class="btn btn-primary">Ver Órdenes</a>
                 </div>
             </div>
         </div>
 
         <h3 class="mt-5">Chat con Cliente</h3>
         <div class="chat-box mt-3 p-3">
-            {% for mensaje in chat %}
-                <p><strong>{{ mensaje.usuario }}:</strong> {{ mensaje.texto }}</p>
-            {% endfor %}
+            <p><strong>Proveedor:</strong> Hola, ¿necesitas ayuda con tu pedido?</p>
+            <p><strong>Cliente:</strong> Sí, quisiera más detalles sobre el envío.</p>
         </div>
-        <form method="POST" action="{{ url_for('enviar_mensaje') }}">
-            <input type="text" name="mensaje" class="form-control mt-2" placeholder="Escribe un mensaje...">
-            <button class="btn btn-primary mt-2" type="submit">Enviar</button>
-        </form>
+        <input type="text" id="mensaje" class="form-control mt-2" placeholder="Escribe un mensaje...">
+        <button class="btn btn-primary mt-2" onclick="enviarMensaje()">Enviar</button>
     </div>
 
 </body>

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, session
 from services.usuarios_service import listar_usuarios
 from services.clientes_service import listar_clientes
 from services.proveedores_service import listar_proveedores
@@ -7,9 +7,11 @@ from services.reportes_service import listar_reportes
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
-@admin_bp.route('/')
-def dashboard_admin():
-    return render_template('templatesAdmin/admin.html')
+@admin_bp.route('/dashboard')
+def dashboard():
+    if session.get('rol') != 'admin':
+        return "Acceso denegado", 403
+    return render_template('templatesAdmin/admin.html', usuario=session.get('usuario'))
 
 @admin_bp.route('/clientes')
 def admin_clientes():

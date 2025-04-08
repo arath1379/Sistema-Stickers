@@ -63,38 +63,33 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ url_for('main.dashboard_cliente') }}">
+            <a class="navbar-brand" href="{{ url_for('cliente.dashboard') }}">
                 <i class="fas fa-store"></i> Cliente
             </a>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.historial_cliente') }}">
+                    <a class="nav-link" href="{{ url_for('cliente.historial') }}">
                         <i class="fas fa-history"></i> Historial
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.carrito_cliente') }}">
+                    <a class="nav-link" href="{{ url_for('cliente.carrito') }}">
                         <i class="fas fa-shopping-cart"></i> Carrito
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.catalogo_cliente') }}">
+                    <a class="nav-link" href="{{ url_for('cliente.catalogo') }}">
                         <i class="fas fa-store"></i> Catálogo
                     </a>
                 <li class="nav-item>">
-                    <a class="nav-link" href="{{ url_for('main.pedidos_cliente') }}">
+                    <a class="nav-link" href="{{ url_for('cliente.pedidos') }}">
                         <i class="fas fa-box"></i> Pedidos
                     </a>
                 </li>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.perfil_cliente') }}">
+                    <a class="nav-link" href="{{ url_for('cliente.perfil') }}">
                         <i class="fas fa-user"></i> Perfil
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.pedidos_cliente') }}">
-                        <i class="fas fa-box"></i> Pedidos
                     </a>
                 </li>
                 <li class="nav-item">
@@ -103,7 +98,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-danger" href="{{ url_for('main.logout') }}">
+                    <a class="nav-link text-danger" href="{{ url_for('auth.logout') }}">
                         <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
                     </a>
                 </li>

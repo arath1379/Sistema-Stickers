@@ -81,13 +81,16 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('proveedor.inventario') }}">Inventario</a>
+                    <a class="nav-link" href="{{ url_for('admin.admin_roles') }}">Roles</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('proveedor.inicio') }}">Inicio</a>
+                    <a class="nav-link" href="{{ url_for('admin.dashboard') }}">Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('proveedor.pedidos') }}">Pedidos</a>
+                    <a class="nav-link" href="{{ url_for('admin.admin_proveedores') }}">Proveedores</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('admin.admin_reportes') }}">Reportes</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-danger" href="{{ url_for('logout') }}">Salir</a>

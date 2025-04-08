@@ -1,12 +1,14 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, session
 from services.clientes_service import listar_clientes
 from services.inventario_service import listar_inventario
 from services.pedidos_service import listar_pedidos
 
 proveedor_bp = Blueprint('proveedor', __name__, url_prefix='/proveedor')
 
-@proveedor_bp.route('/')
-def dashboard_proveedor():
+@proveedor_bp.route('/dashboard')
+def dashboard():
+    if session.get('rol') != 'proveedor':
+        return "Acceso denegado", 403
     return render_template('templatesProveedor/proveedor.html')
 
 @proveedor_bp.route('/clientes')

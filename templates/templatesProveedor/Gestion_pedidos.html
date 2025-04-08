@@ -104,13 +104,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('inventario.index') }}"><i class="fas fa-boxes"></i> Inventario</a>
+                        <a class="nav-link" href="{{ url_for('proveedor.proveedor_inventario') }}"><i class="fas fa-boxes"></i> Inventario</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('clientes.index') }}"><i class="fas fa-users"></i> Clientes</a>
+                        <a class="nav-link" href="{{ url_for('proveedor.proveedor_clientes') }}"><i class="fas fa-users"></i> Clientes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('proveedor.index') }}"><i class="fas fa-home"></i> Inicio</a>
+                        <a class="nav-link" href="{{ url_for('proveedor.dashboard') }}"><i class="fas fa-home"></i> Inicio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-danger" href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt"></i> Salir</a>

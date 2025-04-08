@@ -125,19 +125,19 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div>
-            <a href="{{ url_for('admin_dashboard') }}" class="navbar-brand"><i class="fas fa-user-shield"></i> Administrador</a>
+            <a href="{{ url_for('admin.dashboard') }}" class="navbar-brand"><i class="fas fa-user-shield"></i> Administrador</a>
         </div>
         <ul>
-            <li><a href="{{ url_for('gestion_roles') }}"><i class="fas fa-users-cog"></i> Gestión de Roles</a></li>
-            <li><a href="{{ url_for('reportes') }}"><i class="fas fa-chart-bar"></i> Reportes</a></li>
-            <li><a href="{{ url_for('clientes') }}"><i class="fas fa-users-cog"></i> Clientes</a></li>
-            <li><a href="{{ url_for('proveedores') }}"><i class="fas fa-users-cog"></i> Proveedores</a></li>
-            <li>
-                <a href="{{ url_for('ver_notificaciones') }}" class="notificacion-icon">
-                    <i class="fas fa-bell"></i> <span id="notificaciones">{{ notificaciones }}</span>
+            <li><a href="{{ url_for('admin.admin_roles') }}"><i class="fas fa-users-cog"></i> Gestión de Roles</a></li>
+            <li><a href="{{ url_for('admin.admin_reportes') }}"><i class="fas fa-chart-bar"></i> Reportes</a></li>
+            <li><a href="{{ url_for('admin.admin_clientes') }}"><i class="fas fa-users-cog"></i> Clientes</a></li>
+            <li><a href="{{ url_for('admin.admin_proveedores') }}"><i class="fas fa-users-cog"></i> Proveedores</a></li>
+            <li class="nav-item">
+                <a class="nav-link text-warning" href="#" onclick="verNotificaciones()">
+                    <i class="fas fa-bell"></i> <span id="notificaciones">3</span>
                 </a>
             </li>
-            <li><a href="{{ url_for('logout') }}" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+            <li><a href="{{ url_for('auth.logout') }}" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
         </ul>
     </nav>
 
@@ -150,30 +150,24 @@
                 <div class="card">
                     <h5>Gestión de Clientes</h5>
                     <p>Administrar información de clientes.</p>
-                    <a class="btn btn-primary" href="{{ url_for('clientes') }}">Ver Clientes</a>
+                    <a class="btn btn-primary" href="{{ url_for('admin.admin_clientes') }}">Ver Clientes</a>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="card">
                     <h5>Gestión de Proveedores</h5>
                     <p>Supervisar a los proveedores.</p>
-                    <a class="btn btn-primary" href="{{ url_for('proveedores') }}">Ver Proveedores</a>
+                    <a class="btn btn-primary" href="{{ url_for('admin.admin_proveedores') }}">Ver Proveedores</a>
                 </div>
             </div>
         </div>
 
         <!-- Chat en vivo -->
-        <h3 class="mt-5">Chat con Proveedor</h3>
+        <h3 class="mt-5">Chat con Cliente</h3>
         <div class="chat-box mt-3 p-3">
-            {% for mensaje in mensajes_chat %}
-                <p><strong>{{ mensaje.autor }}:</strong> {{ mensaje.contenido }}</p>
-            {% endfor %}
+            <p><strong>Proveedor:</strong> Hola, ¿necesitas ayuda con tu pedido?</p>
+            <p><strong>Cliente:</strong> Sí, quisiera más detalles sobre el envío.</p>
         </div>
-
-        <form method="POST" action="{{ url_for('enviar_mensaje') }}">
-            <input type="text" name="mensaje" class="form-control mt-2" placeholder="Escribe un mensaje...">
-            <button class="btn btn-primary mt-2" type="submit">Enviar</button>
-        </form>
     </div>
 
 </body>
