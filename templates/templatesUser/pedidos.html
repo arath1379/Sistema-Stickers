@@ -77,7 +77,6 @@
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('cliente.dashboard') }}"><i class="fas fa-store"></i> Inicio</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('cliente.carrito') }}"><i class="fas fa-shopping-cart"></i> Carrito</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('cliente.historial') }}"><i class="fas fa-history"></i> Historial</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('cliente.perfil') }}"><i class="fas fa-user"></i> Perfil</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('cliente.catalogo') }}"><i class="fas fa-store"></i> Catálogo</a></li>
                 <li class="nav-item"><a class="nav-link text-danger" href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
             </ul>
@@ -115,7 +114,7 @@
                     {% for pedido in pedidos %}
                         <tr>
                             <td>#{{ pedido.id }}</td>
-                            <td>{{ pedido.fecha }}</td>
+                            <td>{{ pedido.fecha_pedido }}</td>
                             <td>{{ pedido.productos }}</td>
                             <td>${{ pedido.total }}</td>
                             <td><span class="status {{ pedido.estado }}">{{ pedido.estado.capitalize() }}</span></td>

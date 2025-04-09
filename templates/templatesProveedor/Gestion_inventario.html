@@ -109,7 +109,7 @@
                         <a class="nav-link" href="{{ url_for('proveedor.proveedor_pedidos') }}"><i class="fas fa-truck"></i> Pedidos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('proveedor.proveedor_inventario') }}"><i class="fas fa-box"></i> Inventario</a>
+                        <a class="nav-link" href="{{ url_for('proveedor.proveedor_productos') }}"><i class="fas fa-box"></i> Inventario</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-danger" href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt"></i> Salir</a>
@@ -139,24 +139,35 @@
                     <th>Nombre</th>
                     <th>Categoría</th>
                     <th>Precio</th>
-                    <th>Cantidad</th>
+                    <th>Stock</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for producto in productos %}
                     {% set color = 'green' %}
-                    {% if producto.cantidad < 5 %}
-                        {% set color = 'red' %}
-                    {% elif producto.cantidad < 10 %}
-                        {% set color = 'orange' %}
+                    {% if 'stock' in producto %}
+                        {% if producto['stock'] < 5 %}
+                            {% set color = 'red' %}
+                        {% elif producto['stock'] < 10 %}
+                            {% set color = 'orange' %}
+                        {% endif %}
+                    {% else %}
+                        {% set color = 'gray' %}
                     {% endif %}
                     <tr>
-                        <td>{{ producto.nombre }}</td>
-                        <td>{{ producto.categoria }}</td>
-                        <td>${{ producto.precio }}</td>
-                        <td class="text-{{ color }}">{{ producto.cantidad }}</td>
+                        <td>{{ producto['nombre'] }}</td>
+                        <td>{{ producto['categoria'] }}</td>
+                        <td>${{ producto['precio'] }}</td>
+                        <td class="text-{{ color }}">
+                            {% if 'stock' in producto %}
+                                {{ producto['stock'] }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </td>
                         <td>
+                            <!-- Aquí, generamos un solo botón de editar para cada producto -->
                             <button class="btn btn-edit btn-sm"
                                     data-bs-toggle="modal"
                                     data-bs-target="#editProductModal"
@@ -164,25 +175,23 @@
                                     data-nombre="{{ producto.nombre }}"
                                     data-categoria="{{ producto.categoria }}"
                                     data-precio="{{ producto.precio }}"
-                                    data-cantidad="{{ producto.cantidad }}">
+                                    data-stock="{{ producto['stock'] if 'stock' in producto else '' }}">
                                 Editar
                             </button>
-                            <a href="{{ url_for('inventario.eliminar_producto', id=producto.id) }}"
-                               class="btn btn-delete btn-sm">Eliminar</a>
-                            {% if producto.cantidad < 10 %}
-                            <button class="btn btn-warning btn-sm">Reponer</button>
+                            {% if 'stock' in producto and producto['stock'] < 10 %}
+                                <button class="btn btn-warning btn-sm">Reponer</button>
                             {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
-            </tbody>
+            </tbody>            
         </table>
     </div>
 
     <!-- Modal Agregar Producto -->
     <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <form method="POST" action="/inventario">
+            <form method="POST" action="{{ url_for('proveedor.agregar_producto') }}">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="addProductModalLabel">Agregar Producto</h5>
@@ -207,8 +216,8 @@
                             <input type="number" class="form-control" name="precio" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Cantidad</label>
-                            <input type="number" class="form-control" name="cantidad" required>
+                            <label class="form-label">Stock</label>
+                            <input type="number" class="form-control" name="stock" required>
                         </div>
                         <button type="submit" class="btn btn-save w-100">Guardar Producto</button>
                     </div>
@@ -216,69 +225,63 @@
             </form>
         </div>
     </div>
-
     <!-- Modal Editar Producto -->
-    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <form method="POST" id="editForm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Editar Producto</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <input type="hidden" name="id" id="edit-id">
-                        <div class="mb-3">
-                            <label class="form-label">Nombre</label>
-                            <input type="text" class="form-control" name="nombre" id="edit-nombre" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Categoría</label>
-                            <input type="text" class="form-control" name="categoria" id="edit-categoria" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Precio</label>
-                            <input type="number" class="form-control" name="precio" id="edit-precio" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Cantidad</label>
-                            <input type="number" class="form-control" name="cantidad" id="edit-cantidad" required>
-                        </div>
-                        <button type="submit" class="btn btn-save w-100">Actualizar</button>
-                    </div>
+<div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="POST" id="editForm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-            </form>
-        </div>
+                <div class="modal-body">
+                    <input type="hidden" name="producto_id" id="edit-producto_id"> <!-- Agregar producto_id -->
+                    <div class="mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" class="form-control" name="nombre" id="edit-nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Categoría</label>
+                        <input type="text" class="form-control" name="categoria" id="edit-categoria" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Precio</label>
+                        <input type="number" class="form-control" name="precio" id="edit-precio" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Cantidad (Stock)</label>
+                        <input type="number" class="form-control" name="cantidad" id="edit-stock" required>
+                    </div>
+                    <button type="submit" class="btn btn-save w-100">Actualizar</button>
+                </div>
+            </div>
+        </form>
     </div>
+</div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Script para cargar datos en el modal -->
+<script>
+    const editModal = document.getElementById('editProductModal');
+    editModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget; // El botón que activó el modal
+        const id = button.getAttribute('data-id');
+        const nombre = button.getAttribute('data-nombre');
+        const categoria = button.getAttribute('data-categoria');
+        const precio = button.getAttribute('data-precio');
+        const stock = button.getAttribute('data-stock');
 
-    <!-- Script para cargar datos en el modal -->
-    <script>
-        function logout() {
-            alert("Sesión cerrada");
-            window.location.href = "login.html";
-        }
+        document.getElementById('edit-producto_id').value = id; // Asignamos producto_id
+        document.getElementById('edit-nombre').value = nombre;
+        document.getElementById('edit-categoria').value = categoria;
+        document.getElementById('edit-precio').value = precio;
+        document.getElementById('edit-stock').value = stock;
 
-        const editModal = document.getElementById('editProductModal');
-        editModal.addEventListener('show.bs.modal', function (event) {
-            const button = event.relatedTarget;
-            const id = button.getAttribute('data-id');
-            const nombre = button.getAttribute('data-nombre');
-            const categoria = button.getAttribute('data-categoria');
-            const precio = button.getAttribute('data-precio');
-            const cantidad = button.getAttribute('data-cantidad');
+        // Actualizamos la acción del formulario para usar el producto_id como parámetro de ruta
+        document.getElementById('editForm').action = '/proveedor/productos/editar/' + id + '?cantidad=' + stock;
+    });
+</script>
 
-            document.getElementById('edit-id').value = id;
-            document.getElementById('edit-nombre').value = nombre;
-            document.getElementById('edit-categoria').value = categoria;
-            document.getElementById('edit-precio').value = precio;
-            document.getElementById('edit-cantidad').value = cantidad;
-
-            document.getElementById('editForm').action = '/editar/' + id;
-        });
-    </script>
-
+<!-- Incluir el JS de Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

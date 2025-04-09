@@ -135,28 +135,26 @@
             <li><a href="{{ url_for('cliente.historial') }}">Historial</a></li>
             <li><a href="{{ url_for('cliente.carrito') }}">Carrito</a></li>
             <li><a href="{{ url_for('cliente.pedidos') }}">Pedidos</a></li>
-            <li><a href="{{ url_for('cliente.perfil') }}">Perfil</a></li>
         </ul>
     </nav>
 
     <div class="container">
         <h2>Carrito de Compras</h2>
-
         <div id="cart-items">
             {% for p in productos %}
             <div class="cart-item">
-                <img src="{{ p.imagen }}" alt="{{ p.nombre }}">
-                <p>{{ p.nombre }} - <span class="price">${{ "%.2f"|format(p.precio) }}</span></p>
-                <form method="POST" action="{{ url_for('main.eliminar_del_carrito', id=p.id) }}">
+                <!-- Cambiar 'producto' por 'p' -->
+                <img src="{{ url_for('static', filename='images/default.jpg' + p['imagen']) }}" alt="{{ p['nombre'] }}" width="50">
+                <span class="price">${{ "%.2f"|format(p.precio) }}</span>
+                <form method="POST" action="{{ url_for('cliente.eliminar_del_carrito', id=p.id) }}">
                     <button class="btn-delete" type="submit">Eliminar</button>
                 </form>
             </div>
             {% endfor %}
         </div>
-
         <p class="total">Total: ${{ "%.2f"|format(total) }}</p>
 
-        <form method="POST" action="{{ url_for('main.procesar_pago') }}">
+        <form method="POST" action="{{ url_for('cliente.procesar_pago') }}">
             <button class="btn-pagar" type="submit">Proceder al Pago</button>
         </form>
     </div>

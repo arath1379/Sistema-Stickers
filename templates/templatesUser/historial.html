@@ -93,7 +93,6 @@
         <li><a href="{{ url_for('cliente.historial') }}">Historial</a></li>
         <li><a href="{{ url_for('cliente.carrito') }}">Carrito</a></li>
         <li><a href="{{ url_for('cliente.pedidos') }}">Pedidos</a></li>
-        <li><a href="{{ url_for('cliente.perfil') }}">Perfil</a></li>
     </ul>
 </nav>
 
@@ -104,7 +103,7 @@
         {% for pedido in pedidos %}
             <div class="order-card">
                 <div class="order-info">
-                    <img src="{{ pedido.imagen }}" alt="{{ pedido.producto }}">
+                    <img src="{{ url_for('static', filename='images/default.jpg' + pedido.imagen) }}" alt="{{ pedido.producto }}">
                     <p>Pedido #{{ pedido.id }} - <strong>{{ pedido.producto }}</strong></p>
                 </div>
                 <div class="order-details">

@@ -1,6 +1,6 @@
 import requests
 
-API_URL = "http://localhost:5001"  # FastAPI base URL
+API_URL = "http://localhost:5002"  # FastAPI base URL
 
 def get(endpoint):
     response = requests.get(f"{API_URL}{endpoint}")

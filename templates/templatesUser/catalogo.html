@@ -109,41 +109,23 @@
             <li><a href="{{ url_for('cliente.historial') }}">Historial</a></li>
             <li><a href="{{ url_for('cliente.carrito') }}">Carrito</a></li>
             <li><a href="{{ url_for('cliente.pedidos') }}">Pedidos</a></li>
-            <li><a href="{{ url_for('cliente.perfil') }}">Perfil</a></li>
         </ul>
     </nav>
 
     <div class="container">
         <h2>Catálogo de Comics</h2>
-
         <div class="catalog-grid">
+            {% for producto in productos %}
             <div class="card">
-                <img src="{{ url_for('static', filename='images/sticker1.jpg') }}" alt="Sticker Anime">
-                <p>Sticker Anime Pack - $15.00</p>
-                <form method="POST" action="{{ url_for('main.agregar_al_carrito') }}">
-                    <input type="hidden" name="nombre" value="Sticker Anime Pack">
-                    <input type="hidden" name="precio" value="15.00">
+                <img src="{{ url_for('static', filename='images/' + producto.get('imagen', 'default.jpg')) }}" alt="{{ producto.nombre }}">
+                <p>{{ producto.nombre }} - ${{ producto.precio }}</p>
+                <form method="POST" action="{{ url_for('cliente.agregar_al_carrito') }}">
+                    <input type="hidden" name="nombre" value="{{ producto.nombre }}">
+                    <input type="hidden" name="precio" value="{{ producto.precio }}">
                     <button type="submit" class="btn">Agregar al Carrito</button>
                 </form>
             </div>
-            <div class="card">
-                <img src="{{ url_for('static', filename='images/sticker2.jpg') }}" alt="Sticker Superhéroes">
-                <p>Sticker Superhéroes - $12.00</p>
-                <form method="POST" action="{{ url_for('main.agregar_al_carrito') }}">
-                    <input type="hidden" name="nombre" value="Sticker Superhéroes">
-                    <input type="hidden" name="precio" value="12.00">
-                    <button type="submit" class="btn">Agregar al Carrito</button>
-                </form>
-            </div>
-            <div class="card">
-                <img src="{{ url_for('static', filename='images/sticker3.jpg') }}" alt="Sticker Retro">
-                <p>Sticker Retro - $10.00</p>
-                <form method="POST" action="{{ url_for('main.agregar_al_carrito') }}">
-                    <input type="hidden" name="nombre" value="Sticker Retro">
-                    <input type="hidden" name="precio" value="10.00">
-                    <button type="submit" class="btn">Agregar al Carrito</button>
-                </form>
-            </div>
+            {% endfor %}
         </div>
     </div>
 
